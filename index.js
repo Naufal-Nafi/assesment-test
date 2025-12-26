@@ -1,4 +1,5 @@
 // ============= No 1 =============
+// Table
 const table = [
   { code: "A001", name: "Wati", parent: null },
   { code: "A002", name: "Wira", parent: "A001" },
@@ -9,18 +10,25 @@ const table = [
   { code: "A007", name: "Abdul", parent: "A006" },
 ];
 
+// Function dengan input 'code' dari tabel, contoh = "A001"
 function getDescendants(input) {
+    // validasi input
     if (!table.some((item) => item.code === input)) {
         return "Kode Invalid";
     }
 
     let result = [];
 
+    // mencari anak langsung dari input
     const children = table.filter((item) => item.parent === input);
 
+    // mencari keturunan dari setiap anak 
     for (const child of children) {
+        // masukkan child ke arrayChecks
         result.push(child.name);
+        // memanggil kembali fungsi ini untuk mencari keturunan
         const descendantsOfChild = getDescendants(child.code);
+        // menggabungkan variabel result dengan hasil keturunan terbaru
         result = result.concat(descendantsOfChild)
     }
 
@@ -36,46 +44,67 @@ console.log(getDescendants("A005"));
 
 
 // ============= No 2 =============
-function getFibonacciArray(input) {
+// Function dengan input jumlah bilangan fibonacci
+function getFibonacciarrayChecks(input) {
+    // arrayChecks fibonacci awal
     let fibonacci = [0, 1];
+
+    // validasi input
+    if (input <= 0) return "Input tidak valid";
+    if (input === 1) return fibonacci[0];
+    if (input === 2) return fibonacci;
+
+    // setiap iterasi dengan maksimal jumlah iterasi adalah input, akan menambah value baru ke arrayChecks berupa bilangan terakhir + bilangan kedua terakhir
     for (let index = fibonacci.length; index < input; index++) {
         fibonacci.push(fibonacci.at(-1) + fibonacci.at(-2))
     }
     return fibonacci;
 }
 
-console.log(getFibonacciArray(5))
-console.log(getFibonacciArray(10))
+console.log(getFibonacciarrayChecks(5))
+console.log(getFibonacciarrayChecks(10))
+
 
 
 
 
 // ============= No 3 =============
 function getSubstring(input) {
+    // pastikan input adalah string
+    input = input.toString();
+    // pisah string menjadi arrayChecks
     const splitText = input.split("")
-    let listSementara = [];
-    let listResult = [];
+    // buat arrayChecks untuk menyimpan nilai sementara
+    let arrayChecks = [];
+    // buat result untuk menyimpan hasil akhir
+    let result = [];
 
     for (const char of splitText) {
-        if (!listSementara.includes(char)) {
-            listSementara.push(char)
+        // cek apakah ada char di arrayChecks
+        if (!arrayChecks.includes(char)) {
+            // bila tidak ada, masukkan char ke arrayCheck
+            arrayChecks.push(char)
+
         } else {
-            if (listSementara.length > listResult.length) {
-                listResult = listSementara
+            // jika char ada di arrayChecks, periksa dulu apakah arrayChecks lebih panjang dari result, kalau true berarti isi result dengan arrayChecks
+            if (arrayChecks.length > result.length) {
+                result = arrayChecks
             }
-            // listSementara = [char];
-            const index = listSementara.indexOf(char);
-            listSementara = listSementara.slice(index + 1);
-            listSementara.push(char);
+            // geser window pengecekan
+            const index = arrayChecks.indexOf(char);
+            arrayChecks = arrayChecks.slice(index + 1);
+            arrayChecks.push(char);
 
         }
 
-        if (listSementara.length > listResult.length) {
-            listResult = listSementara
+        // cek untuk terakhir kalinya
+        if (arrayChecks.length > result.length) {
+            result = arrayChecks
         }
     }
 
-    return [listResult.join(""), listResult.length];
+    // kembalikan string result dan panjangnya
+    return [result.join(""), result.length];
 }
 
 const [result, length] = getSubstring("pwwkew")
@@ -85,19 +114,20 @@ console.log(`Substring terpanjang adalah "${result}" dengan panjang ${length}`)
 
 
 
+
 // ============= Integrasi HTML =============
 function handleDescendants() {
     const kode = document.getElementById("kodeInput").value;
     const result = getDescendants(kode);
 
-    document.getElementById("descendantsResult").innerText = Array.isArray(result) ? result.join(", ") : result;
+    document.getElementById("descendantsResult").innerText = arrayChecks.isarrayChecks(result) ? result.join(", ") : result;
 }
 
 function handleFibonacci() {
     const angka = Number(document.getElementById("fibInput").value);
-    const result = getFibonacciArray(angka);
+    const result = getFibonacciarrayChecks(angka);
 
-    document.getElementById("fibResult").innerText = result.join(", ");
+    document.getElementById("fibResult").innerText = result;
 }
 
 function handleSubstring() {
